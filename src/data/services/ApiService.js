@@ -1,29 +1,28 @@
-const url = "http://localhost:3002/api/"
+const url = 'http://localhost:3002/api/react-flux/';
 
 export const ApiService = {
-
-    get(endpoint) {
-        return fetch(`${url}${endpoint}`).then(reponse => reponse.json());
+    get(endpoint){
+        return fetch(`${url}${endpoint}`)
+            .then(response => response.json());
     },
-
-    post(endpoint, data) {
+    post(endpoint, data){
         return fetch(`${url}${endpoint}`, {
             method: 'POST',
             body: JSON.stringify(data)
-        }).then(reponse => reponse.json());
+        })
+            .then(response => response.json());
     },
-
-    put(endpoint, data) {
+    put(endpoint, data){
         return fetch(`${url}${endpoint}?id=${data.id}`, {
             method: 'PUT',
             body: JSON.stringify(data)
-        }).then(reponse => reponse.json());
+        })
+            .then(response => response.json());
     },
-
-    delete(endpoint, id) {
+    delete(endpoint, id){
         return fetch(`${url}${endpoint}?id=${id}`, {
-            method: 'DELETE',
-        }).then(reponse => reponse.json());
+            method: 'DELETE'
+        })
+            .then(response => response.json());
     }
-
 }

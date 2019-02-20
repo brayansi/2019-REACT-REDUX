@@ -1,22 +1,17 @@
 import { ApiService } from './ApiService';
+const endpoint = 'todo';
 
-const endpoint= "flux";
-
-export const FluxService = {
-    
-    list() {
+export const TodoService = {
+    list(){
         return ApiService.get(endpoint);
     },
-
-    create(item) {
+    create(item){
         return ApiService.post(endpoint, item);
     },
-
-    update(item) {
+    update(item){
         return ApiService.put(endpoint, item);
     },
-
-    remove(id) {
+    remove(id){
         return ApiService.delete(endpoint, id);
     }
 }

@@ -1,51 +1,30 @@
 import React, { Component } from 'react';
-import FluxList from './views/components/FluxList';
-import NewFluxItem from './views/components/NewFluxItem';
-import FluxActions from './data/actions/FluxActions';
-import FluxStore from './data/stores/FluxStore';
 import './App.css';
 
-async function getFluxState(){
-   return {
-      fluxList: await FluxStore.getAll()
-   }
-}
+import ToDoList from './views/components/ToDoList';
+import NewToDoItem from './views/components/NewToDoItem';
+
+import * as TodoActions from './data/actions/TodoActions';
+import { connect } from 'react-redux';
 
 class App extends Component {
-
-   constructor(props) {
-      super(props);
-      this.state = {
-         fluxList: []
-      }
-
-      this._onChange = this._onChange.bind(this);
-      this._onChange();
-   }
-
-   componentDidMount() {
-      FluxStore.addChangeListerner(this._onChange);
-   }
-
-   componentWillMount() {
-      FluxStore.removeChangeListerner(this._onChange);
-
-   }
-
-   async _onChange() {
-      this.setState(await getFluxState());
-   }
-
-   render() {
-      const { state } = this;
-      return (
-         <div className="App">
-            <NewFluxItem onAdd={FluxActions.create} />
-            <button className="tw-btn" onClick={FluxActions.clear}>Limpar</button>
-            <FluxList items={state.fluxList} onRemove={FluxActions.remove} onUpdate={FluxActions.update} />
-         </div>
-      );
-   }
+  render() {
+    const { props } = this,
+      { dispatch } = props;
+    return (
+      <div className="App">
+        <NewToDoItem onAdd={(description) => { dispatch(TodoActions.create(description)) } } />
+        <hr />
+        <button className="tw-btn" onClick={ () => { dispatch(TodoActions.clear()) }} >Limpar</button>
+        <hr />
+        <ToDoList items={props.todoList} onRemove={ (id) => { dispatch(TodoActions.remove(id)) }} onUpdate={ (item) => { dispatch(TodoActions.update(item)) }} />
+      </div>
+    );
+  }
 }
 
-export default App;
+const mapStateToProps = state => ({
+  todoList: state.TodoReducer
+})
+
+export default connect(mapStateToProps)(App);
